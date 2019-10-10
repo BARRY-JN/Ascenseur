@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="b429dd4c-7aa5-4f29-b14a-9d5058672e71" name="Default Changelist" comment="version 1">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ascenseur_graphique.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Ascenseur_graphique.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Ascenseur_graphique/AscenseurGUI$ElevatorVisualizationPanel$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Ascenseur_graphique/AscenseurGUI$ElevatorVisualizationPanel$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Ascenseur_graphique/AscenseurGUI$ElevatorVisualizationPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Ascenseur_graphique/AscenseurGUI$ElevatorVisualizationPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Ascenseur_graphique/AscenseurGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Ascenseur_graphique/AscenseurGUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AscenseurGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AscenseurGUI.java" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="GithubProjectSettings">
+    <option name="CREATE_PULL_REQUEST_DEFAULT_BRANCH" value="master" />
+    <option name="CREATE_PULL_REQUEST_DEFAULT_REPO_USER" value="jn42barry" />
+    <option name="CREATE_PULL_REQUEST_DEFAULT_REPO_NAME" value="AscenseurGL" />
+  </component>
+  <component name="IgnoredFileRootStore">
+    <option name="generatedRoots">
+      <set>
+        <option value="C:\Users\Jean-Noel\IdeaProjects\Ascenseur_graphique\.idea" />
+      </set>
+    </option>
+  </component>
+  <component name="ProjectId" id="1RnHdXO4LKf8b3rhQ6myZPYfbRd" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Documents/FAC/L3/S5/Algo 2/Convexe" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="Test" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="AscenseurGUI" />
+      <module name="Ascenseur_graphique" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b429dd4c-7aa5-4f29-b14a-9d5058672e71" name="Default Changelist" comment="" />
+      <created>1570296027664</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1570296027664</updated>
+    </task>
+    <task id="LOCAL-00001" summary="version 1">
+      <created>1570485880342</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1570485880342</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+</project>

@@ -15,78 +15,23 @@ public class AscenseurGUI {
 		private int step=1;
 		private int actual_floor = 5;
 		private int floor_size=50;
-		private boolean go_up = false;
-		private boolean go_down = false;
-		private boolean stop_next_floor = false;
-		private boolean emergency_stop = false;
 
-
-		public void go_upstair(){
-			go_up=true;
-			go_down=false;
-			emergency_stop=false;
-			stop_next_floor=false;
-		}
-
-		public void go_downstair(){
-			go_up=false;
-			go_down=true;
-			emergency_stop=false;
-			stop_next_floor=false;
-
-		}
-
-		public void next_floor(){
-			emergency_stop=false;
-			stop_next_floor=true;
-		}
-		public void stop_all(){
-			go_up=false;
-			go_down=false;
-			emergency_stop=true;
-			stop_next_floor=false;
-		}
-		public void stop(){
-			go_up=false;
-			go_down=false;
-			emergency_stop=false;
-			stop_next_floor=false;
-		}
-
-		public ElevatorVisualizationPanel() {
+		public ElevatorVisualizationPanel(Action action) {
 			Timer timer = new Timer(40, new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					moveElevator();
+					Point coord = action.moveElevator();
+					x = coord.x;
+					y = coord.y;
 					repaint();
 				}
 			});
 			timer.start();
 		}
 
-		protected void moveElevator() {
-			if(go_up&&!emergency_stop&&y>=0) {
-				y -= 2;
-			}
-			if(go_down&&!emergency_stop&&y<floor_size*4) {
-				y += 2;
-			}
-			if(stop_next_floor&&!emergency_stop){
-				if(go_up) {
-					if(y==0||y==50||y==100||y==150)
-						stop();
-				}
-				if(go_down) {
-					if(y==50||y==100||y==150||y==200)
-						stop();
-				}
-			}
-
-		}
-
 		@Override
 		public Dimension getPreferredSize() {
-			return new Dimension(220, 260);
+			return new Dimension(220, 300);
 		}
 
 		@Override
@@ -94,7 +39,7 @@ public class AscenseurGUI {
 
 			super.paintComponent(g);
 			Graphics2D elevator = (Graphics2D) g.create();
-			for(int i=0;i<5;i++) {
+			for(int i=0;i<=5;i++) {
 				elevator.setColor(Color.ORANGE);
 				elevator.fillRect(0, i*floor_size, 200, floor_size);
 				elevator.setColor(Color.YELLOW);
@@ -149,7 +94,7 @@ public class AscenseurGUI {
 		return ButtonsList;
 	}
 
-	public AscenseurGUI(){
+	public AscenseurGUI(Action action){
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
@@ -162,7 +107,7 @@ public class AscenseurGUI {
 		f.getContentPane().setLayout(grid);
 
 		GridBagConstraints gbc = new GridBagConstraints();
-		ElevatorVisualizationPanel EVP = new ElevatorVisualizationPanel();
+		ElevatorVisualizationPanel EVP = new ElevatorVisualizationPanel(action);
 
 
 		JPanel Panel_InternalCommand=new JPanel();
@@ -198,13 +143,13 @@ public class AscenseurGUI {
 		column=new JPanel();
 		column.setLayout(new BoxLayout(column, BoxLayout.Y_AXIS));
 		column.add(new JLabel("Appel de la cabine"));
-		for(int i=5;i>0;i--){
+		for(int i=5;i>=0;i--){
 			row = new JPanel();
 			//row.setLayout(new BoxLayout(row, BoxLayout.X_AXIS));
 			row.add(new JLabel(" Etage "+i+" "));
 			if(i!=5)
 				row.add(new JButton("/\\"));
-			if(i!=1)
+			if(i!=0)
 				row.add(new JButton("\\/"));
 			column.add(row);
 		}
@@ -214,24 +159,23 @@ public class AscenseurGUI {
 		JPanel column1=new JPanel();
 		JPanel column2=new JPanel();
 		Panel_OperativeControl.setLayout(new BoxLayout(Panel_OperativeControl, BoxLayout.Y_AXIS));
-		JLabel Label_OperativeControl=new JLabel("Partie opérative");
+		JLabel Label_OperativeControl=new JLabel("Contrôle du moteur");
 		//gbc.ipady = 100;
 		//gbc.ipadx = 200;
 		gbc.gridx = 0;
 		gbc.gridy = 1;
-		gbc.gridwidth = 2;
 		Panel_OperativeControl.add(Label_OperativeControl);
 		JButton Up=new JButton("Monter");
-		Up.addActionListener(e -> EVP.go_upstair());
+		Up.addActionListener(e -> action.go_upstair());
 		JButton Down=new JButton("Descendre");
-		Down.addActionListener(e -> EVP.go_downstair());
+		Down.addActionListener(e -> action.go_downstair());
 		column1.add(Up);
 		column1.add(Down);
 		Panel_OperativeControl.add(column1);
 		JButton StopNextFloor=new JButton("Arrêter au prochain niveau");
-		StopNextFloor.addActionListener(e -> EVP.next_floor());
+		StopNextFloor.addActionListener(e -> action.next_floor());
 		JButton Stop=new JButton("ARRET D'URGENCE");
-		Stop.addActionListener(e -> EVP.stop_all());
+		Stop.addActionListener(e -> action.stop_all());
 		column2.add(StopNextFloor);
 		column2.add(Stop);
 		Panel_OperativeControl.add(column1);
@@ -241,23 +185,26 @@ public class AscenseurGUI {
 		JPanel Panel_Output=new JPanel();
 		Panel_Output.setLayout(new BoxLayout(Panel_Output, BoxLayout.Y_AXIS));
 		JLabel Label_Output=new JLabel("Output :");
-		gbc.gridx = 2;
+		gbc.gridx = 1;
 		gbc.gridy = 1;
-		JTextArea textArea = new JTextArea(6,20);
-		textArea.setEnabled(false);
-		JScrollPane scrollableTextArea = new JScrollPane(textArea);
+		gbc.gridwidth = 2;
+		action.get_text_area().setEditable(false);
+		JScrollPane scrollableTextArea = new JScrollPane(action.get_text_area());
+		scrollableTextArea.setPreferredSize(new Dimension(500,200));
 		scrollableTextArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		Panel_Output.add(Label_Output);
 		Panel_Output.add(scrollableTextArea);
 		f.add(Panel_Output,gbc);
 
 		f.setTitle("Projet Ascenseur");
-		f.setSize(900,600);
+		f.setSize(1120,650);
 		f.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		f.setVisible(true);//making the frame visible
 	}
 	public static void main(String[] args) {
-		AscenseurGUI AscGUI = new AscenseurGUI();
+		Action action = new Action();
+		AscenseurGUI AscGUI = new AscenseurGUI(action);
+		//action.get_text_area().append("Test");
 	}
 }
 
