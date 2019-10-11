@@ -156,12 +156,30 @@ public class AscenseurGUI {
 		column.add(new JLabel("Appel de la cabine"));
 		for(int i=5;i>=0;i--){
 			row = new JPanel();
-			//row.setLayout(new BoxLayout(row, BoxLayout.X_AXIS));
+			//Declaration et initialisation des boutons qui serviront aux appels dans les étages
 			row.add(new JLabel(" Etage "+i+" "));
-			if(i!=5)
-				row.add(new JButton("/\\"));
-			if(i!=0)
-				row.add(new JButton("\\/"));
+			if(i!=5) {
+				JButton jb = new JButton("/\\");
+				final int finalI = i;
+				jb.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						action.get_Instructions().add_external(finalI, Instructions.Sens.HAUT);
+					}
+				});
+				row.add(jb);
+			}
+			if(i!=0) {
+				JButton jb2 = new JButton("\\/");
+				final int finalI = i;
+				jb2.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						action.get_Instructions().add_external(finalI, Instructions.Sens.BAS);
+					}
+				});
+				row.add(jb2);
+			}
 			column.add(row);
 		}
 		f.add(column,gbc);

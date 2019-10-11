@@ -19,6 +19,10 @@ public class Action {
 		this.ins=ins;
 	}
 
+	public Instructions get_Instructions(){
+		return ins;
+	}
+
 	public JTextArea get_text_area(){
 		return textArea;
 	}
@@ -92,7 +96,6 @@ public class Action {
 
 	public void detected_floor() {
 		//si un étage a été détecté, on vérifie qu'il n'y ait pas eu une demande d'arret au prochain étage
-		//output_text("[ACTION] Etage détecté");
 		if(stop_next_floor&&!emergency_stop){
 			stop();
 		}

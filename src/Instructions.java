@@ -1,9 +1,23 @@
 import java.util.ArrayList;
 
 public class Instructions {
-	ArrayList<Integer> Instructions =new ArrayList<>();
-	public enum Sens{HAUT,BAS};
 
-	Sens sens = Sens.HAUT;
-	private int actual_floor = 5;
+	public enum Sens{HAUT,BAS};
+	class command {
+		public int floor;
+		Sens sens;
+
+		public command(int floor,Sens sens){
+			this.floor=floor;
+			this.sens=sens;
+		}
+	}
+	ArrayList<command> external_instructions =new ArrayList<>();
+	ArrayList<command> inner_instructions =new ArrayList<>();
+
+	void add_external(int floor, Sens sens){
+		external_instructions.add(new command(floor,sens));
+	}
+
+	private int actual_floor = 0;
 }
