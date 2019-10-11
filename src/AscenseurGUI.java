@@ -12,6 +12,7 @@ public class AscenseurGUI {
 
 		private int x = 0;
 		private int y = 0;
+		private boolean floor_detected=false;
 		private int step=1;
 		private int actual_floor = 5;
 		private int floor_size=50;
@@ -20,6 +21,8 @@ public class AscenseurGUI {
 			Timer timer = new Timer(40, new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					if(floor_detected())
+						action.detected_floor();
 					Point coord = action.moveElevator();
 					x = coord.x;
 					y = coord.y;
@@ -27,6 +30,16 @@ public class AscenseurGUI {
 				}
 			});
 			timer.start();
+		}
+
+		public boolean floor_detected(){
+			if(!floor_detected&&(y==50||y==100||y==150||y==200)) {
+				floor_detected=true;
+				return true;
+			}else{
+				floor_detected=false;
+				return false;
+			}
 		}
 
 		@Override

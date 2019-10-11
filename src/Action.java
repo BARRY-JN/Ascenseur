@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Action extends JPanel {
+public class Action {
 
 	private int x = 0;
 	private int y = 0;
@@ -67,16 +67,12 @@ public class Action extends JPanel {
 		if(go_down&&!emergency_stop&&y<floor_size*5) {
 			y += 2;
 		}
-		if(stop_next_floor&&!emergency_stop){
-			if(go_up) {
-				if(y==0||y==50||y==100||y==150||y==200)
-					stop();
-			}
-			if(go_down) {
-				if(y==50||y==100||y==150||y==200||y==250)
-					stop();
-			}
-		}
 		return new Point(x,y);
+	}
+
+	public void detected_floor() {
+		if(stop_next_floor&&!emergency_stop){
+			stop();
+		}
 	}
 }

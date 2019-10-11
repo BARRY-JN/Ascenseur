@@ -2,14 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b429dd4c-7aa5-4f29-b14a-9d5058672e71" name="Default Changelist" comment="version 1">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ascenseur_graphique.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Ascenseur_graphique.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Ascenseur_graphique/Action.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Ascenseur_graphique/Action.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Ascenseur_graphique/AscenseurGUI$ElevatorVisualizationPanel$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Ascenseur_graphique/AscenseurGUI$ElevatorVisualizationPanel$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Ascenseur_graphique/AscenseurGUI$ElevatorVisualizationPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Ascenseur_graphique/AscenseurGUI$ElevatorVisualizationPanel.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Ascenseur_graphique/AscenseurGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Ascenseur_graphique/AscenseurGUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Action.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Action.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/AscenseurGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AscenseurGUI.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -24,6 +23,10 @@
         <option value="Class" />
       </list>
     </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="MERGE" />
   </component>
   <component name="GithubProjectSettings">
     <option name="CREATE_PULL_REQUEST_DEFAULT_BRANCH" value="master" />
@@ -85,5 +88,16 @@
     </task>
     <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
