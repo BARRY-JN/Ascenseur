@@ -33,7 +33,7 @@ public class AscenseurGUI {
 
 		public boolean floor_detected(){
 			if(action.is_moving()&&(y==0||y==50||y==100||y==150||y==200||y==250)) {
-				action.output_text("[ASCENSEUR] Etage détecté");
+				action.output_text("[ASCENSEUR] Etage détecté",true);
 				return true;
 			}else{
 				return false;
@@ -165,6 +165,7 @@ public class AscenseurGUI {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						action.get_Instructions().add_external(finalI, Instructions.Sens.HAUT);
+						action.print_externals_instructions();
 					}
 				});
 				row.add(jb);
@@ -176,6 +177,7 @@ public class AscenseurGUI {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						action.get_Instructions().add_external(finalI, Instructions.Sens.BAS);
+						action.print_externals_instructions();
 					}
 				});
 				row.add(jb2);

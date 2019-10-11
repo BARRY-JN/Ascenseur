@@ -23,12 +23,22 @@ public class Action {
 		return ins;
 	}
 
+	public void print_externals_instructions(){
+		for(Instructions.command i:ins.external_instructions){
+			output_text("( "+String.valueOf(i.floor)+" - "+i.sens.toString()+") ",false);
+		}
+		output_text("",true);
+	}
+
 	public JTextArea get_text_area(){
 		return textArea;
 	}
 
-	public void output_text(String text){
-		textArea.append("\n"+text);
+	public void output_text(String text,boolean escape){
+		if(escape)
+			textArea.append("\n"+text);
+		else
+			textArea.append(text);
 	}
 
 	public void go_upstair(){
@@ -36,7 +46,7 @@ public class Action {
 		go_down=false;
 		emergency_stop=false;
 		stop_next_floor=false;
-		output_text("[MOTEUR] L'ascenseur va en haut !");
+		output_text("[MOTEUR] L'ascenseur va en haut !",true);
 	}
 
 	public void go_downstair(){
@@ -44,21 +54,21 @@ public class Action {
 		go_down=true;
 		emergency_stop=false;
 		stop_next_floor=false;
-		output_text("[MOTEUR] L'ascenseur va en bas !");
+		output_text("[MOTEUR] L'ascenseur va en bas !",true);
 
 	}
 
 	public void next_floor(){
 		emergency_stop=false;
 		stop_next_floor=true;
-		output_text("[MOTEUR] L'ascenseur s'arrétera au prochain étage !");
+		output_text("[MOTEUR] L'ascenseur s'arrétera au prochain étage !",true);
 	}
 	public void stop_all(){
 		go_up=false;
 		go_down=false;
 		emergency_stop=true;
 		stop_next_floor=false;
-		output_text("[MOTEUR] Arrêt d'urgence !");
+		output_text("[MOTEUR] Arrêt d'urgence !",true);
 	}
 	public void stop(){
 		go_up=false;

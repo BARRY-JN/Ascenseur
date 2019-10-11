@@ -12,12 +12,14 @@ public class Instructions {
 			this.sens=sens;
 		}
 	}
-	ArrayList<command> external_instructions =new ArrayList<>();
+	public ArrayList<command> external_instructions =new ArrayList<>();
 	ArrayList<command> inner_instructions =new ArrayList<>();
 
 	void add_external(int floor, Sens sens){
 		external_instructions.add(new command(floor,sens));
 	}
+
+
 
 	private int actual_floor = 0;
 }
