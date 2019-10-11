@@ -14,7 +14,12 @@ public class Action {
 	private boolean go_down = false;
 	private boolean stop_next_floor = false;
 	private boolean emergency_stop = false;
+	private Instructions ins;
 	private JTextArea textArea = new JTextArea(6,20);
+
+	public Action(Instructions ins){
+		this.ins=ins;
+	}
 
 	public JTextArea get_text_area(){
 		return textArea;
@@ -71,8 +76,13 @@ public class Action {
 	}
 
 	public void detected_floor() {
+		//si un étage a été détecté, on vérifie qu'il n'y ait pas eu une demande d'arret au prochain étage
 		if(stop_next_floor&&!emergency_stop){
 			stop();
 		}
+	}
+
+	public void direction_reversal(){
+
 	}
 }

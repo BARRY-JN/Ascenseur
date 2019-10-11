@@ -215,7 +215,8 @@ public class AscenseurGUI {
 		f.setVisible(true);//making the frame visible
 	}
 	public static void main(String[] args) {
-		Action action = new Action();
+		Instructions ins = new Instructions();
+		Action action = new Action(ins);
 		AscenseurGUI AscGUI = new AscenseurGUI(action);
 		//action.get_text_area().append("Test");
 	}
