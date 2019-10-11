@@ -1,39 +1,38 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import static java.lang.Thread.sleep;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 
 public class AscenseurGUI {
-	public class ElevatorVisualizationPanel extends JPanel {
+	public static class ElevatorVisualizationPanel extends JPanel {
 		private int y = 250;
-		private boolean moving=false;
-		private int step=1;
-		private int actual_floor = 5;
 		private int floor_size=50;
 		private Action action;
 
-		public ElevatorVisualizationPanel(Action action) {
+		ElevatorVisualizationPanel(Action action) {
 			this.action=action;
-			Timer timer = new Timer(40, new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					if(floor_detected())
-						action.detected_floor();
-					Point coord = action.moveElevator();
-					y = coord.y;
-					repaint();
+			Timer timer = new Timer(40, e -> {
+				if(floor_detected()) {
+					Action.output_text("[ASCENSEUR] Etage détecté",true);
+					action.detected_floor();
+					try {
+						sleep(2000);
+					} catch (InterruptedException ex) {
+						ex.printStackTrace();
+					}
 				}
+				Point coord = action.moveElevator();
+				y = coord.y;
+				repaint();
 			});
 			timer.start();
 		}
 
-		public boolean floor_detected(){
+		boolean floor_detected(){
 			if(action.is_moving()&&(y==0||y==50||y==100||y==150||y==200||y==250)) {
-				action.output_text("[ASCENSEUR] Etage détecté",true);
 				return true;
 			}else{
 				return false;
@@ -50,7 +49,7 @@ public class AscenseurGUI {
 
 			super.paintComponent(g);
 			Graphics2D elevator = (Graphics2D) g.create();
-			for(int i=0;i<=5;i++) {
+			for(int i=0;i<5;i++) {
 				elevator.setColor(Color.ORANGE);
 				elevator.fillRect(0, i*floor_size, 200, floor_size);
 				elevator.setColor(Color.YELLOW);
@@ -58,6 +57,12 @@ public class AscenseurGUI {
 				elevator.setColor(Color.BLACK);
 				elevator.drawString("[" + (5-i) + "]",180,(i*floor_size)+(floor_size/2));
 			}
+			elevator.setColor(Color.ORANGE);
+			elevator.fillRect(0, 5*floor_size, 200, floor_size);
+			elevator.setColor(Color.YELLOW);
+			elevator.fillRect(2, (5*floor_size)+2, 196, floor_size-4);
+			elevator.setColor(Color.BLACK);
+			elevator.drawString("[RDC]",163,(5*floor_size)+(floor_size/2));
 
 			elevator.setColor(Color.BLACK);
 			elevator.fillRect(0,y,floor_size-10,floor_size);
@@ -72,21 +77,29 @@ public class AscenseurGUI {
 	}
 
 
-	public ArrayList<JButton> createFloorButtons(){
+	private ArrayList<JButton> createFloorButtons(Action action){
 		ArrayList<JButton> ButtonsList = new ArrayList<>();
 		JButton Floor_button;
 		Image button_icon;
 
-		for(int i=5;i>0;i--) {
-			Floor_button = new JButton("Etage "+i);
+		for(int i=5;i>=0;i--) {
+			if(i!=0)
+				Floor_button = new JButton("Etage "+i);
+			else
+				Floor_button = new JButton("   RDC  ");
 			try {
 				button_icon = ImageIO.read(getClass().getResource("etage"+i+"off.png"));
 				Floor_button.setIcon(new ImageIcon(button_icon));
 				button_icon = ImageIO.read(getClass().getResource("etage"+i+"on.png"));
 				Floor_button.setPressedIcon (new ImageIcon(button_icon));
 				Floor_button.setMaximumSize(new Dimension(194,60));
+				final int finalI = i;
+				Floor_button.addActionListener(e -> {
+					action.get_Instructions().add_internal(finalI);
+					action.print_externals_instructions();
+				});
 			} catch (Exception ex) {
-				System.out.println(ex);
+				System.out.println(ex.getMessage());
 			}
 			ButtonsList.add(Floor_button);
 		}
@@ -99,13 +112,13 @@ public class AscenseurGUI {
 			button_icon = ImageIO.read(getClass().getResource("boutonsAUon.png"));
 			Floor_button.setPressedIcon(new ImageIcon(button_icon));
 		} catch (Exception ex) {
-			System.out.println(ex);
+			System.out.println(ex.getMessage());
 		}
 		ButtonsList.add(Floor_button);
 		return ButtonsList;
 	}
 
-	public AscenseurGUI(Action action){
+	private AscenseurGUI(Action action){
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
@@ -128,7 +141,7 @@ public class AscenseurGUI {
 		gbc.gridy = 0;
 		//gbc.anchor = GridBagConstraints.WEST;
 		Panel_InternalCommand.add(Label_InternalCommand);
-		for(JButton Floor_button:createFloorButtons()) {
+		for(JButton Floor_button:createFloorButtons(action)) {
 			Panel_InternalCommand.add(Floor_button);
 		}
 		f.add(Panel_InternalCommand,gbc);
@@ -161,24 +174,18 @@ public class AscenseurGUI {
 			if(i!=5) {
 				JButton jb = new JButton("/\\");
 				final int finalI = i;
-				jb.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						action.get_Instructions().add_external(finalI, Instructions.Sens.HAUT);
-						action.print_externals_instructions();
-					}
+				jb.addActionListener(e -> {
+					action.get_Instructions().add_external(finalI, Instructions.Sens.HAUT);
+					action.print_externals_instructions();
 				});
 				row.add(jb);
 			}
 			if(i!=0) {
 				JButton jb2 = new JButton("\\/");
 				final int finalI = i;
-				jb2.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						action.get_Instructions().add_external(finalI, Instructions.Sens.BAS);
-						action.print_externals_instructions();
-					}
+				jb2.addActionListener(e -> {
+					action.get_Instructions().add_external(finalI, Instructions.Sens.BAS);
+					action.print_externals_instructions();
 				});
 				row.add(jb2);
 			}
