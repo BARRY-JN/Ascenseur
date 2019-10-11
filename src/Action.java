@@ -5,10 +5,8 @@ import java.awt.event.ActionListener;
 
 public class Action {
 
-	private int x = 0;
-	private int y = 0;
+	private int y = 250;
 	private int step=1;
-	private int actual_floor = 5;
 	private int floor_size=50;
 	private boolean go_up = false;
 	private boolean go_down = false;
@@ -65,18 +63,36 @@ public class Action {
 		stop_next_floor=false;
 	}
 
+	public boolean is_moving(){
+		return go_up||go_down;
+	}
+
 	protected Point moveElevator() {
-		if(go_up&&!emergency_stop&&y>=0) {
-			y -= 2;
+		if(!emergency_stop) {
+			if (go_up) {
+				//On ne monte plus si on arrive au dernier étage
+				if(y>=0)
+					y -= 2;
+				else
+					go_up=false;
+			}
+			if (go_down) {
+				//On ne descend plus si on arrive au RDC
+				if(y<floor_size*5)
+					y += 2;
+				else
+					go_down=false;
+			}
+		}else{
+			go_up=false;
+			go_down=false;
 		}
-		if(go_down&&!emergency_stop&&y<floor_size*5) {
-			y += 2;
-		}
-		return new Point(x,y);
+		return new Point(0,y);
 	}
 
 	public void detected_floor() {
 		//si un étage a été détecté, on vérifie qu'il n'y ait pas eu une demande d'arret au prochain étage
+		//output_text("[ACTION] Etage détecté");
 		if(stop_next_floor&&!emergency_stop){
 			stop();
 		}

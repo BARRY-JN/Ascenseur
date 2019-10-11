@@ -9,22 +9,21 @@ import static javax.swing.JFrame.EXIT_ON_CLOSE;
 
 public class AscenseurGUI {
 	public class ElevatorVisualizationPanel extends JPanel {
-
-		private int x = 0;
-		private int y = 0;
-		private boolean floor_detected=false;
+		private int y = 250;
+		private boolean moving=false;
 		private int step=1;
 		private int actual_floor = 5;
 		private int floor_size=50;
+		private Action action;
 
 		public ElevatorVisualizationPanel(Action action) {
+			this.action=action;
 			Timer timer = new Timer(40, new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					if(floor_detected())
 						action.detected_floor();
 					Point coord = action.moveElevator();
-					x = coord.x;
 					y = coord.y;
 					repaint();
 				}
@@ -33,11 +32,10 @@ public class AscenseurGUI {
 		}
 
 		public boolean floor_detected(){
-			if(!floor_detected&&(y==50||y==100||y==150||y==200)) {
-				floor_detected=true;
+			if(action.is_moving()&&(y==0||y==50||y==100||y==150||y==200||y==250)) {
+				action.output_text("[ASCENSEUR] Etage détecté");
 				return true;
 			}else{
-				floor_detected=false;
 				return false;
 			}
 		}
@@ -62,12 +60,12 @@ public class AscenseurGUI {
 			}
 
 			elevator.setColor(Color.BLACK);
-			elevator.fillRect(x,y,floor_size-10,floor_size);
+			elevator.fillRect(0,y,floor_size-10,floor_size);
 
 			elevator.setColor(Color.LIGHT_GRAY);
 
-			elevator.fillRect(x,y,(floor_size-10)-4,floor_size);
-			elevator.fillRect(x+floor_size-10,y,(floor_size-10)-4,floor_size);
+			elevator.fillRect(0,y,(floor_size-10)-4,floor_size);
+			elevator.fillRect(floor_size-10,y,(floor_size-10)-4,floor_size);
 			elevator.dispose();
 		}
 
