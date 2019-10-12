@@ -9,26 +9,53 @@ import static javax.swing.JFrame.EXIT_ON_CLOSE;
 public class AscenseurGUI {
 	public static class ElevatorVisualizationPanel extends JPanel {
 		private int y = 250;
-		private int floor_size=50;
+		private int floor_height =50;
 		private Action action;
+		private int door_l=2,door_r=2;
+		private int animation=0;
+		private boolean do_animate=false;
 
 		ElevatorVisualizationPanel(Action action) {
 			this.action=action;
 			Timer timer = new Timer(40, e -> {
-				if(floor_detected()) {
-					Action.output_text("[ASCENSEUR] Etage détecté",true);
-					action.detected_floor();
+				if(!do_animate) {
+					if (floor_detected()) {
+						Action.output_text("[ASCENSEUR] Etage détecté", true);
+						action.detected_floor();
+						//do_animate = true;
+					}
+					Point coord = action.moveElevator();
+					y = coord.y;
+				}else{
+					door_animation();
+				}
+				repaint();
+			});
+			timer.start();
+		}
+
+		private void door_animation() {
+			if(animation<=60) {
+				if(animation<25) {
+					door_r++;
+					door_l++;
+				}
+				if(animation>=25&&animation<=35) {
 					try {
-						sleep(2000);
+						sleep(100);
 					} catch (InterruptedException ex) {
 						ex.printStackTrace();
 					}
 				}
-				Point coord = action.moveElevator();
-				y = coord.y;
-				repaint();
-			});
-			timer.start();
+				if(animation>35){
+					door_r--;
+					door_l--;
+				}
+				animation++;
+			}else{
+				animation=0;
+				do_animate=false;
+			}
 		}
 
 		boolean floor_detected(){
@@ -51,26 +78,26 @@ public class AscenseurGUI {
 			Graphics2D elevator = (Graphics2D) g.create();
 			for(int i=0;i<5;i++) {
 				elevator.setColor(Color.ORANGE);
-				elevator.fillRect(0, i*floor_size, 200, floor_size);
+				elevator.fillRect(0, i* floor_height, 200, floor_height);
 				elevator.setColor(Color.YELLOW);
-				elevator.fillRect(2, (i*floor_size)+2, 196, floor_size-4);
+				elevator.fillRect(2, (i* floor_height)+2, 196, floor_height -4);
 				elevator.setColor(Color.BLACK);
-				elevator.drawString("[" + (5-i) + "]",180,(i*floor_size)+(floor_size/2));
+				elevator.drawString("[" + (5-i) + "]",180,(i* floor_height)+(floor_height /2));
 			}
 			elevator.setColor(Color.ORANGE);
-			elevator.fillRect(0, 5*floor_size, 200, floor_size);
+			elevator.fillRect(0, 5* floor_height, 200, floor_height);
 			elevator.setColor(Color.YELLOW);
-			elevator.fillRect(2, (5*floor_size)+2, 196, floor_size-4);
+			elevator.fillRect(2, (5* floor_height)+2, 196, floor_height -4);
 			elevator.setColor(Color.BLACK);
-			elevator.drawString("[RDC]",163,(5*floor_size)+(floor_size/2));
+			elevator.drawString("[RDC]",163,(5* floor_height)+(floor_height /2));
 
 			elevator.setColor(Color.BLACK);
-			elevator.fillRect(0,y,floor_size-10,floor_size);
+			elevator.fillRect(0,y, 80, floor_height);
 
 			elevator.setColor(Color.LIGHT_GRAY);
 
-			elevator.fillRect(0,y,(floor_size-10)-4,floor_size);
-			elevator.fillRect(floor_size-10,y,(floor_size-10)-4,floor_size);
+			elevator.fillRect(0,y,(floor_height -10)-door_l, floor_height);
+			elevator.fillRect(floor_height -10+door_r,y,(floor_height -10)-door_r, floor_height);
 			elevator.dispose();
 		}
 

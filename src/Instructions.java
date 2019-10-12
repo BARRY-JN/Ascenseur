@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Instructions {
@@ -20,26 +21,33 @@ public class Instructions {
 	Sens actual_direction = Sens.HAUT;
 	private int actual_floor = 0;
 
-	public void update_floor_level() {
-		Action.output_text("[INSTRUCTION] Etage actuel calculé : "+actual_floor,true);
-		System.out.println(actual_floor);
+	public int get_floor(){
+		return actual_floor;
+	}
+
+	public void direction_reversal(){
 		if(actual_direction==Sens.HAUT){
-			if(actual_floor<5) {
-				actual_floor++;
-			}else {
-				actual_direction = Sens.BAS;
-				actual_floor=5;
-				return;
-			}
+			actual_direction=Sens.BAS;
 		}else{
-			if(actual_floor>0) {
-				actual_floor--;
-			}else {
-				actual_direction = Sens.HAUT;
-				actual_floor=0;
-				return;
-			}
+			actual_direction=Sens.HAUT;
 		}
+
+	}
+
+	public void update_floor_level() {
+		Action.output_text("        [INSTRUCTION] Etage actuel calculé : "+actual_floor,true);
+		if(actual_direction==Sens.HAUT) {
+			if (actual_floor < 5)
+				actual_floor += 1;
+			else
+				direction_reversal();
+		}else{
+			if(actual_floor > 0)
+				actual_floor -= 1;
+			else
+				direction_reversal();
+		}
+
 	}
 
 	void add_external(int floor, Sens sens){

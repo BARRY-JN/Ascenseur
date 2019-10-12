@@ -4,7 +4,6 @@
     <list default="true" id="b429dd4c-7aa5-4f29-b14a-9d5058672e71" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Ascenseur_graphique/Action.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Ascenseur_graphique/Action.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Ascenseur_graphique/AscenseurGUI$ElevatorVisualizationPanel$1.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Ascenseur_graphique/AscenseurGUI$ElevatorVisualizationPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Ascenseur_graphique/AscenseurGUI$ElevatorVisualizationPanel.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Ascenseur_graphique/AscenseurGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Ascenseur_graphique/AscenseurGUI.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Action.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Action.java" afterDir="false" />
@@ -121,7 +120,14 @@
       <option name="project" value="LOCAL" />
       <updated>1570804879075</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="version 0.0.7">
+      <created>1570831957061</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1570831957061</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -143,6 +149,7 @@
     <MESSAGE value="version 0.0.4" />
     <MESSAGE value="version 0.0.5" />
     <MESSAGE value="version 0.0.6" />
-    <option name="LAST_COMMIT_MESSAGE" value="version 0.0.6" />
+    <MESSAGE value="version 0.0.7" />
+    <option name="LAST_COMMIT_MESSAGE" value="version 0.0.7" />
   </component>
 </project>
