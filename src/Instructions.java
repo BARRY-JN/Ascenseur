@@ -1,25 +1,51 @@
 import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
+import static java.lang.Thread.sleep;
 
 public class Instructions {
 
+	Action act;
+
+	public void set_Actionner(Action action) {
+		act=action;
+	}
+
 	public enum Sens{HAUT,BAS};
-	class command {
-		public int floor;
+	class Command  {
+		public Integer floor;
 		Sens sens;
 
-		public command(int floor,Sens sens){
+		public Command(int floor,Sens sens){
 			this.floor=floor;
 			this.sens=sens;
 		}
 	}
 
-	public ArrayList<command> external_instructions =new ArrayList<>();
-	ArrayList<command> inner_instructions =new ArrayList<>();
+	class CommandCompararator implements Comparator<Command>{
+		@Override
+		public int compare(Command c1, Command c2)
+		{
+
+			return  c1.floor.compareTo(c2.floor);
+		}
+	}
+
+	private ArrayList<Command> instructions_list =new ArrayList<>();
+	private ArrayList<Command> waiting_instructions_list =new ArrayList<>();
+
+	ArrayList<Integer> remove_items=new ArrayList<>();
 
 	Sens actual_direction = Sens.HAUT;
 	private int actual_floor = 0;
+	boolean actual_instruction_executed=true;
+	int stop_to_floor=0;
+
+	public ArrayList<Command> get_instructions(){
+		return instructions_list;
+	}
 
 	public int get_floor(){
 		return actual_floor;
@@ -51,11 +77,11 @@ public class Instructions {
 	}
 
 	void add_external(int floor, Sens sens){
-		for(int i=0;i<external_instructions.size();i++){
-			if(external_instructions.get(i).floor==floor)
+		for(int i = 0; i< instructions_list.size(); i++){
+			if(instructions_list.get(i).floor==floor)
 				return;
 		}
-		external_instructions.add(new command(floor,sens));
+		instructions_list.add(new Command(floor,sens));
 	}
 
 	public void add_internal(int floor) {
@@ -66,14 +92,72 @@ public class Instructions {
 		}
 	}
 
+	private void remove_items_not_immediatly(int index){
+		remove_items.add(index);
+	}
+
+	private void await_order_opposite_direction(int index){
+		if (instructions_list.get(index).sens != actual_direction) {
+			waiting_instructions_list.add(instructions_list.get(index));
+			remove_items_not_immediatly(index);
+		}
+	}
+
+	private void displacement_management(){
+		if(instructions_list.size()>0){
+			if(instructions_list.size()==1){
+				if(instructions_list.get(0).sens!=actual_direction){
+					direction_reversal();
+				}
+			}else {
+				for (int i = 0; i < instructions_list.size(); i++) {
+					await_order_opposite_direction(i);
+					if (instructions_list.get(i).floor == actual_floor)
+						remove_items_not_immediatly(i);
+				}
+			}
+		}else{
+			if(waiting_instructions_list.size()>0) {
+				instructions_list.addAll(waiting_instructions_list);
+				waiting_instructions_list.removeAll(waiting_instructions_list);
+			}
+		}
+		for(int k=0;k<remove_items.size();k++){
+			instructions_list.remove(remove_items.get(k));
+		}
+		remove_items.removeAll(remove_items);
+		Collections.sort(instructions_list,new CommandCompararator());
+	}
+
+	private void displacement_executor(){
+		if(instructions_list.size()>0) {
+			if (actual_instruction_executed) {
+				Command c = instructions_list.get(0);
+				actual_instruction_executed=false;
+				stop_to_floor=c.floor;
+				if(actual_direction==Sens.HAUT)
+					act.go_upstair();
+				else
+					act.go_downstair();
+
+			}else{
+				if(actual_floor-stop_to_floor==1||actual_floor-stop_to_floor==-1) {
+					act.next_floor();
+					actual_instruction_executed=true;
+					if(act.can_open_doors())
+						instructions_list.remove(0);
+				}
+			}
+		}
+	}
 
 	Instructions(){
-		/*
-		Timer timer = new Timer(50, e -> {
-
+		Timer timer = new Timer(100, e -> {
+			displacement_management();
+			displacement_executor();
 		});
 		timer.start();
-		 */
+
 	}
 
 }

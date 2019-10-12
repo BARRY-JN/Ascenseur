@@ -9,19 +9,21 @@ public class Action {
 	private boolean go_down = false;
 	private boolean stop_next_floor = false;
 	private boolean emergency_stop = false;
+	private boolean stopped = false;
 	private Instructions ins;
 	private static JTextArea textArea = new JTextArea(6,20);
 
 	Action(Instructions ins){
 		this.ins=ins;
+		ins.set_Actionner(this);
 	}
 
 	Instructions get_Instructions(){
 		return ins;
 	}
 
-	void print_externals_instructions(){
-		for(Instructions.command i:ins.external_instructions){
+	void print_instructions(){
+		for(Instructions.Command i:ins.get_instructions()){
 			output_text("( "+ i.floor +" - "+i.sens.toString()+") ",false);
 		}
 		output_text("",true);
@@ -38,12 +40,18 @@ public class Action {
 			textArea.append(text);
 	}
 
+	boolean can_open_doors(){
+		if(stopped)
+			return true;
+		return false;
+	}
 	void go_upstair(){
 		if(ins.get_floor()!=5)
 			go_up=true;
 		go_down=false;
 		emergency_stop=false;
 		stop_next_floor=false;
+		stopped=false;
 		output_text("    [MOTEUR] L'ascenseur va en haut !",true);
 	}
 
@@ -53,6 +61,7 @@ public class Action {
 			go_down=true;
 		emergency_stop=false;
 		stop_next_floor=false;
+		stopped=false;
 		output_text("    [MOTEUR] L'ascenseur va en bas !",true);
 
 	}
@@ -67,6 +76,7 @@ public class Action {
 		go_down=false;
 		emergency_stop=true;
 		stop_next_floor=false;
+		stopped=true;
 		output_text("    [MOTEUR] Arrêt d'urgence !",true);
 	}
 	private void stop(){
@@ -74,6 +84,7 @@ public class Action {
 		go_down=false;
 		emergency_stop=false;
 		stop_next_floor=false;
+		stopped=true;
 	}
 
 	boolean is_moving(){
@@ -89,6 +100,7 @@ public class Action {
 				else {
 					go_up = false;
 					y = 0;
+					Action.output_text("    [MOTEUR] Sommet atteint",true);
 				}
 			}
 			if (go_down) {
@@ -109,9 +121,11 @@ public class Action {
 
 	void detected_floor() {
 		//si un étage a été détecté, on vérifie qu'il n'y ait pas eu une demande d'arret au prochain étage
+
 		if(stop_next_floor&&!emergency_stop){
 			stop();
 		}
+
 		ins.update_floor_level();
 	}
 }

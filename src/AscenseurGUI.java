@@ -22,7 +22,8 @@ public class AscenseurGUI {
 					if (floor_detected()) {
 						Action.output_text("[ASCENSEUR] Etage détecté", true);
 						action.detected_floor();
-						//do_animate = true;
+						if(action.can_open_doors())
+							do_animate = true;
 					}
 					Point coord = action.moveElevator();
 					y = coord.y;
@@ -35,19 +36,19 @@ public class AscenseurGUI {
 		}
 
 		private void door_animation() {
-			if(animation<=60) {
+			if(animation<=50) {
 				if(animation<25) {
 					door_r++;
 					door_l++;
 				}
-				if(animation>=25&&animation<=35) {
+				if(animation==26) {
 					try {
-						sleep(100);
+						sleep(1000);
 					} catch (InterruptedException ex) {
 						ex.printStackTrace();
 					}
 				}
-				if(animation>35){
+				if(animation>26){
 					door_r--;
 					door_l--;
 				}
@@ -123,7 +124,7 @@ public class AscenseurGUI {
 				final int finalI = i;
 				Floor_button.addActionListener(e -> {
 					action.get_Instructions().add_internal(finalI);
-					action.print_externals_instructions();
+					action.print_instructions();
 				});
 			} catch (Exception ex) {
 				System.out.println(ex.getMessage());
@@ -203,7 +204,7 @@ public class AscenseurGUI {
 				final int finalI = i;
 				jb.addActionListener(e -> {
 					action.get_Instructions().add_external(finalI, Instructions.Sens.HAUT);
-					action.print_externals_instructions();
+					action.print_instructions();
 				});
 				row.add(jb);
 			}
@@ -212,7 +213,7 @@ public class AscenseurGUI {
 				final int finalI = i;
 				jb2.addActionListener(e -> {
 					action.get_Instructions().add_external(finalI, Instructions.Sens.BAS);
-					action.print_externals_instructions();
+					action.print_instructions();
 				});
 				row.add(jb2);
 			}
