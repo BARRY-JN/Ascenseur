@@ -8,12 +8,7 @@
   <component name="ChangeListManager">
     <list default="true" id="b429dd4c-7aa5-4f29-b14a-9d5058672e71" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Ascenseur_graphique/Action.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Ascenseur_graphique/Action.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Ascenseur_graphique/AscenseurGUI$ElevatorVisualizationPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Ascenseur_graphique/AscenseurGUI$ElevatorVisualizationPanel.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Ascenseur_graphique/AscenseurGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Ascenseur_graphique/AscenseurGUI.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Action.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Action.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AscenseurGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AscenseurGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instructions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instructions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/Ascenseur_graphique_jar/Ascenseur_graphique.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/Ascenseur_graphique_jar/Ascenseur_graphique.jar" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -170,7 +165,14 @@
       <option name="project" value="LOCAL" />
       <updated>1571064877637</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="version 1.0.1 clean edition">
+      <created>1571066918104</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1571066918104</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -227,6 +229,7 @@
     <MESSAGE value="version 0.0.8" />
     <MESSAGE value="version 1.0.0" />
     <MESSAGE value="version 1.0.0 clean edition" />
-    <option name="LAST_COMMIT_MESSAGE" value="version 1.0.0 clean edition" />
+    <MESSAGE value="version 1.0.1 clean edition" />
+    <option name="LAST_COMMIT_MESSAGE" value="version 1.0.1 clean edition" />
   </component>
 </project>
