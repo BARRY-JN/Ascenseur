@@ -3,10 +3,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-import static java.lang.Thread.sleep;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 
 public class AscenseurGUI {
+
+	//Classe interne utilisée pour dessiner l'assenceur et les étages
 	public static class ElevatorVisualizationPanel extends JPanel {
 		private int y = 250;
 		private int floor_height =50;
@@ -148,7 +149,6 @@ public class AscenseurGUI {
 			ButtonsList.add(Floor_button);
 		}
 		Floor_button = new JButton();
-		//Floor_button.setMaximumSize(new Dimension(100,100));
 
 		try {
 			button_icon = ImageIO.read(getClass().getResource("boutonsAUoff.png"));
@@ -197,8 +197,6 @@ public class AscenseurGUI {
 		gbc.gridx = 1;
 		gbc.gridy = 0;
 		gbc.insets = new Insets(10, 100, 10, 10);
-		//gbc.weighty = 1.0;
-		//gbc.fill = GridBagConstraints.BOTH;
 		Panel_Visualization.add(Label_Visualization);
 		Panel_Visualization.add(EVP);
 		f.add(Panel_Visualization,gbc);
@@ -206,9 +204,6 @@ public class AscenseurGUI {
 		JPanel row,column;
 		gbc.gridx = 2;
 		gbc.gridy = 0;
-		//gbc.weighty = 1.0;
-		//gbc.fill = GridBagConstraints.FIRST_LINE_START;
-		//gbc.gridheight = 5;
 		column=new JPanel();
 		column.setLayout(new BoxLayout(column, BoxLayout.Y_AXIS));
 		column.add(new JLabel("Appel de la cabine"));
@@ -243,8 +238,6 @@ public class AscenseurGUI {
 		JPanel column2=new JPanel();
 		Panel_OperativeControl.setLayout(new BoxLayout(Panel_OperativeControl, BoxLayout.Y_AXIS));
 		JLabel Label_OperativeControl=new JLabel("Contrôle du moteur");
-		//gbc.ipady = 100;
-		//gbc.ipadx = 200;
 		gbc.gridx = 0;
 		gbc.gridy = 1;
 		Panel_OperativeControl.add(Label_OperativeControl);
@@ -288,7 +281,6 @@ public class AscenseurGUI {
 		Instructions ins = new Instructions();
 		Action action = new Action(ins);
 		AscenseurGUI AscGUI = new AscenseurGUI(action);
-		//action.get_text_area().append("Test");
 	}
 }
 

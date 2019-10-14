@@ -147,9 +147,6 @@ public class Instructions {
 
 		if(instructions_list.size()>0){
 			if(instructions_list.size()==1){
-				//if (instructions_list.get(0).floor == actual_floor) {
-				//	remove_items_not_immediatly(instructions_list.get(0));
-				//}else {
 
 				if(instructions_list.get(0).sens==Sens.HAUT){
 					if(instructions_list.get(0).floor<actual_floor)
@@ -159,7 +156,6 @@ public class Instructions {
 						direction_reversal();
 				}
 
-				//}
 			}else {
 				for (int i = 0; i < instructions_list.size(); i++) {
 					if(instructions_list.get(i).sens==actual_direction){
@@ -201,23 +197,13 @@ public class Instructions {
 			//Si la commande actuelle est différente de la commande qui a été placée comme prioritaire (premières valeurs du tableau)
 			//alors la commande actuelle prend la valeur de la commande prioritaire
 
-			//cette partie est blocante, à corriger
-			//quand il n'y a qu'un étage de différence par rapport à l'ascenseur ça boucle ici
-
-			if(actual_floor-stop_to_floor==1&&actual_direction==Sens.BAS)
-				System.out.println("pouf "+(!actual_instruction2_executed));
-			if(actual_floor-stop_to_floor==-1&&actual_direction==Sens.HAUT)
-				System.out.println("pouf2 "+(!actual_instruction2_executed));
-
 			if(!actual_instruction2_executed&&((actual_floor-stop_to_floor==1)||(actual_floor-stop_to_floor==-1))) {
-				//if(actual_floor-stop_to_floor==0){
 				Action.output_text("        [INSTRUCTION] Appel à l'arrêt au prochain étage",true);
 				act.next_floor();
 				actual_instruction2_executed = true;
 			}
 
 			if (actual_floor == stop_to_floor && !actual_instruction_executed) {
-				//System.out.println("b2_b");
 				actual_instruction_executed = true;
 				instructions_list.remove(0);
 				Action.output_text("        [INSTRUCTION] Etage atteint, supression de cet étage dans la liste d'attente",true);
@@ -242,7 +228,6 @@ public class Instructions {
 						act.go_downstair();
 				}
 			}
-				//act.stop_all();
 
 		}
 	}
