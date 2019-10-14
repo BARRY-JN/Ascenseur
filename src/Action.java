@@ -5,6 +5,7 @@ public class Action {
 
 	private int y = 250;
 	private int floor_size=50;
+	private int stopping_floor =-1;
 	private boolean go_up = false;
 	private boolean go_down = false;
 	private boolean stop_next_floor = false;
@@ -23,6 +24,7 @@ public class Action {
 	}
 
 	void print_instructions(){
+		output_text("        [INSTRUCTION] Séquence d'étage actuelle :\n",true);
 		for(Instructions.Command i:ins.get_instructions()){
 			output_text("( "+ i.floor +" - "+i.sens.toString()+") ",false);
 		}
@@ -41,10 +43,20 @@ public class Action {
 	}
 
 	boolean can_open_doors(){
-		if(stopped)
+		if(stopped) {
 			return true;
+		}
 		return false;
 	}
+
+	public void doors_closed() {
+		ins.closed_doors(true);
+	}
+
+	public void doors_openeded() {
+		ins.closed_doors(false);
+	}
+
 	void go_upstair(){
 		if(ins.get_floor()!=5)
 			go_up=true;
@@ -69,15 +81,24 @@ public class Action {
 	void next_floor(){
 		emergency_stop=false;
 		stop_next_floor=true;
+		stopping_floor =-1;
 		output_text("    [MOTEUR] L'ascenseur s'arrétera au prochain étage !",true);
 	}
 	void stop_all(){
-		go_up=false;
-		go_down=false;
-		emergency_stop=true;
-		stop_next_floor=false;
-		stopped=true;
-		output_text("    [MOTEUR] Arrêt d'urgence !",true);
+		if(emergency_stop){
+			emergency_stop=false;
+			stopped=false;
+			ins.emergency_end();
+			output_text("    [MOTEUR] Arrêt d'urgence annulé !", true);
+		}else {
+			go_up = false;
+			go_down = false;
+			emergency_stop = true;
+			stop_next_floor = false;
+			stopped = true;
+			ins.emergency_stop();
+			output_text("    [MOTEUR] Arrêt d'urgence !", true);
+		}
 	}
 	private void stop(){
 		go_up=false;
@@ -92,40 +113,54 @@ public class Action {
 	}
 
 	Point moveElevator() {
-		if(!emergency_stop) {
+		if(emergency_stop){
+			go_up=false;
+			go_down=false;
+		}
+		if(!stopped) {
 			if (go_up) {
 				//On ne monte plus si on arrive au dernier étage
-				if(y>=0)
+				if(y>=0) {
 					y -= 2;
-				else {
+					ins.limits_waived();
+				} else {
 					go_up = false;
 					y = 0;
 					Action.output_text("    [MOTEUR] Sommet atteint",true);
+					ins.upper_limits_reached();
 				}
 			}
 			if (go_down) {
 				//On ne descend plus si on arrive au RDC
-				if(y<floor_size*5)
+				if(y<floor_size*5) {
 					y += 2;
-				else {
+					ins.limits_waived();
+				}else {
 					go_down = false;
 					y=floor_size*5;
+					Action.output_text("    [MOTEUR] Sol atteint",true);
+					ins.lowest_limits_reached();
 				}
 			}
-		}else{
-			go_up=false;
-			go_down=false;
 		}
 		return new Point(0,y);
 	}
 
-	void detected_floor() {
+
+	void detected_floor(int f) {
 		//si un étage a été détecté, on vérifie qu'il n'y ait pas eu une demande d'arret au prochain étage
 
-		if(stop_next_floor&&!emergency_stop){
-			stop();
-		}
+		ins.update_floor_level(f);
 
-		ins.update_floor_level();
+		if(stop_next_floor){
+			if(stopping_floor==-1) {
+				stopping_floor = f;
+			}
+		}
+		if(f==stopping_floor) {
+			stop();
+			stopping_floor = -1;
+		}
 	}
+
 }

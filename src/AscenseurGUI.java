@@ -14,16 +14,20 @@ public class AscenseurGUI {
 		private int door_l=2,door_r=2;
 		private int animation=0;
 		private boolean do_animate=false;
+		private Timer timer;
 
 		ElevatorVisualizationPanel(Action action) {
 			this.action=action;
-			Timer timer = new Timer(40, e -> {
+			timer = new Timer(50, e -> {
+				int floor_detected=-1;
 				if(!do_animate) {
-					if (floor_detected()) {
+					floor_detected=floor_detected();
+					if (floor_detected!=-1) {
 						Action.output_text("[ASCENSEUR] Etage détecté", true);
-						action.detected_floor();
-						if(action.can_open_doors())
+						action.detected_floor(floor_detected);
+						if(action.can_open_doors()) {
 							do_animate = true;
+						}
 					}
 					Point coord = action.moveElevator();
 					y = coord.y;
@@ -36,19 +40,15 @@ public class AscenseurGUI {
 		}
 
 		private void door_animation() {
-			if(animation<=50) {
+			if(animation<=75) {
 				if(animation<25) {
+					if(animation==0)
+						action.doors_openeded();
 					door_r++;
 					door_l++;
 				}
-				if(animation==26) {
-					try {
-						sleep(1000);
-					} catch (InterruptedException ex) {
-						ex.printStackTrace();
-					}
-				}
-				if(animation>26){
+
+				if(animation>50){
 					door_r--;
 					door_l--;
 				}
@@ -56,16 +56,32 @@ public class AscenseurGUI {
 			}else{
 				animation=0;
 				do_animate=false;
+				action.doors_closed();
 			}
 		}
 
-		boolean floor_detected(){
-			if(action.is_moving()&&(y==0||y==50||y==100||y==150||y==200||y==250)) {
-				return true;
-			}else{
-				return false;
+		int floor_detected() {
+			if (action.is_moving()) {
+				if (y == 0)
+					return 5;
+				if (y == 50)
+					return 4;
+				if (y == 100)
+					return 3;
+				if (y == 150)
+					return 2;
+				if (y == 200)
+					return 1;
+				if (y == 250)
+					return 0;
+				else
+					return -1;
+			} else {
+				return -1;
 			}
 		}
+
+
 
 		@Override
 		public Dimension getPreferredSize() {
@@ -139,6 +155,7 @@ public class AscenseurGUI {
 			Floor_button.setIcon(new ImageIcon(button_icon));
 			button_icon = ImageIO.read(getClass().getResource("boutonsAUon.png"));
 			Floor_button.setPressedIcon(new ImageIcon(button_icon));
+			Floor_button.addActionListener(e -> {action.stop_all();});
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
 		}
