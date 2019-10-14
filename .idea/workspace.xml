@@ -3,11 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="b429dd4c-7aa5-4f29-b14a-9d5058672e71" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Ascenseur_graphique/Action.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Ascenseur_graphique/Action.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Ascenseur_graphique/AscenseurGUI$ElevatorVisualizationPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Ascenseur_graphique/AscenseurGUI$ElevatorVisualizationPanel.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Ascenseur_graphique/AscenseurGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Ascenseur_graphique/AscenseurGUI.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AscenseurGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AscenseurGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Instructions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Instructions.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -43,6 +38,9 @@
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$USER_HOME$/Documents/FAC/L3/S5/Algo 2/Convexe" />
+    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
   <component name="RunDashboard">
@@ -147,7 +145,14 @@
       <option name="project" value="LOCAL" />
       <updated>1571063079870</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="version 1.0.0 clean edition">
+      <created>1571064086982</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1571064086982</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -173,6 +178,7 @@
     <MESSAGE value="version 0.0.7b" />
     <MESSAGE value="version 0.0.8" />
     <MESSAGE value="version 1.0.0" />
-    <option name="LAST_COMMIT_MESSAGE" value="version 1.0.0" />
+    <MESSAGE value="version 1.0.0 clean edition" />
+    <option name="LAST_COMMIT_MESSAGE" value="version 1.0.0 clean edition" />
   </component>
 </project>
