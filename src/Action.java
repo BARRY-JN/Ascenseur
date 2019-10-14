@@ -50,6 +50,7 @@ public class Action {
 	}
 
 	public void doors_closed() {
+
 		ins.closed_doors(true);
 	}
 
@@ -106,6 +107,7 @@ public class Action {
 		emergency_stop=false;
 		stop_next_floor=false;
 		stopped=true;
+		Action.output_text("    [MOTEUR] Arrêt",true);
 	}
 
 	boolean is_moving(){

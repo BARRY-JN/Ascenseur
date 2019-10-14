@@ -112,6 +112,8 @@ public class Instructions {
 	void add_external(int floor, Sens s){
 		if(emergency)
 			return;
+		if(floor==actual_floor)
+			return;
 		for(int i = 0; i< instructions_list.size(); i++){
 			if(instructions_list.get(i).floor==floor)
 				return;

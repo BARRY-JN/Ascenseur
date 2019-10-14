@@ -43,8 +43,10 @@ public class AscenseurGUI {
 		private void door_animation() {
 			if(animation<=75) {
 				if(animation<25) {
-					if(animation==0)
+					if(animation==0){
 						action.doors_openeded();
+						Action.output_text("[ASCENSEUR] Ouverture des portes", true);
+					}
 					door_r++;
 					door_l++;
 				}
@@ -58,6 +60,7 @@ public class AscenseurGUI {
 				animation=0;
 				do_animate=false;
 				action.doors_closed();
+				Action.output_text("[ASCENSEUR] Fermeture des portes", true);
 			}
 		}
 
