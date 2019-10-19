@@ -19,7 +19,7 @@ public class AscenseurGUI {
 		private int animation=0;
 		private boolean do_animate=false;
 		private Timer timer;
-		private int previous_floor = 92;
+		private int previous_floor = 0;
 
 		ElevatorVisualizationPanel(Action action) {
 			this.action=action;
