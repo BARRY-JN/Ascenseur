@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -8,16 +9,15 @@ public class Instructions {
 
 	Action act;
 
-	private ArrayList<Command> instructions_list =new ArrayList<>();
-	private ArrayList<Command> waiting_instructions_list =new ArrayList<>();
-	private ArrayList<Command> remove_items=new ArrayList<>();
+	private ArrayList<Command> up_instructions_list = new ArrayList<>();
+	private ArrayList<Command> down_instructions_list = new ArrayList<>();
+	private ArrayList<Command> instructions_list= new ArrayList<>();
 
 	Sens actual_direction = Sens.HAUT;
 	private int actual_floor = 0;
 	boolean actual_instruction_executed=true;
 	boolean actual_instruction2_executed=true;
-	Command actual_command = new Command(12,Sens.HAUT);
-	int stop_to_floor=0;
+	int stop_to_floor=-1;
 
 	boolean highest_floor=false;
 	boolean lowest_floor=false;
@@ -32,11 +32,9 @@ public class Instructions {
 	public enum Sens{HAUT,BAS};
 	class Command  {
 		public Integer floor;
-		Sens sens;
 
-		public Command(int floor,Sens sens){
+		public Command(int floor){
 			this.floor=floor;
-			this.sens=sens;
 		}
 	}
 
@@ -76,6 +74,8 @@ public class Instructions {
 	public void lowest_limits_reached(){
 		lowest_floor=true;
 	}
+	public boolean is_go_up(){return actual_direction==Sens.HAUT;}
+	public boolean is_go_down(){return actual_direction==Sens.BAS;}
 	public void limits_waived(){
 		highest_floor=false;
 		lowest_floor=false;
@@ -83,10 +83,14 @@ public class Instructions {
 
 	public void emergency_stop() {
 		instructions_list.removeAll(instructions_list);
+		up_instructions_list.removeAll(up_instructions_list);
+		down_instructions_list.removeAll(down_instructions_list);
 		emergency=true;
+		for(int i=0;i<6;i++)
+			AscenseurGUI.externals_buttons[i].setBackground(UIManager.getColor ( "Panel.background" ));
 	}
 
-	public void emergency_end() {
+	public void emergency_start() {
 		emergency=false;
 	}
 
@@ -114,80 +118,77 @@ public class Instructions {
 			return;
 		if(floor==actual_floor)
 			return;
-		for(int i = 0; i< instructions_list.size(); i++){
-			if(instructions_list.get(i).floor==floor)
+		for(int i = 0; i< up_instructions_list.size(); i++){
+			if(up_instructions_list.get(i).floor==floor)
 				return;
 		}
-		instructions_list.add(new Command(floor,s));
+		for(int i = 0; i< down_instructions_list.size(); i++){
+			if(down_instructions_list.get(i).floor==floor)
+				return;
+		}
+
+		if(s==Sens.HAUT)
+			up_instructions_list.add(new Command(floor));
+		else
+			down_instructions_list.add(new Command(floor));
 	}
 
+	//On rajoute l'étage
 	public void add_internal(int floor) {
-		if(floor>this.actual_floor){
-			add_external(floor,Sens.HAUT);
-		}else{
-			add_external(floor,Sens.BAS);
-		}
-	}
+			int max=0,min=0;
 
-	private void remove_items_not_immediatly(Command c){
-		for(int i=0;i<remove_items.size();i++) {
-			if(remove_items.get(i)==c)
+			for(int i=0;i<up_instructions_list.size();i++){
+				if(up_instructions_list.get(i).floor<min)
+					min=up_instructions_list.get(i).floor;
+			}
+
+			if(floor>min) {
+				add_external(floor, Sens.HAUT);
 				return;
-		}
-		remove_items.add(c);
+			}
+
+			for(int i=0;i<down_instructions_list.size();i++){
+				if(down_instructions_list.get(i).floor>max)
+					max=down_instructions_list.get(i).floor;
+			}
+
+			if(floor<max) {
+				add_external(floor, Sens.BAS);
+				return;
+			}
 	}
 
-	private void await_order_opposite_direction(Command c){
-		if (c.sens != actual_direction) {
-			waiting_instructions_list.add(c);
-			remove_items_not_immediatly(c);
-		}
-	}
 
+	/*
+
+	 */
 	private void displacement_management(){
-		int number_request_for_actual_direction=0;
 
-		if(instructions_list.size()>0){
-			if(instructions_list.size()==1){
-
-				if(instructions_list.get(0).sens==Sens.HAUT){
-					if(instructions_list.get(0).floor<actual_floor)
-						direction_reversal();
-				}else{
-					if(instructions_list.get(0).floor>actual_floor)
-						direction_reversal();
-				}
-
-			}else {
-				for (int i = 0; i < instructions_list.size(); i++) {
-					if(instructions_list.get(i).sens==actual_direction){
-						number_request_for_actual_direction++;
-					}else{
-						await_order_opposite_direction(instructions_list.get(i));
-					}
-
+		if(is_go_up()) {
+			if (up_instructions_list.size() > 0) {
+				instructions_list = up_instructions_list;
+			} else {
+				if(down_instructions_list.size()>0) {
+					instructions_list = down_instructions_list;
+					direction_reversal();
 				}
 			}
 		}else{
-			if(waiting_instructions_list.size()>0) {
-				instructions_list.addAll(waiting_instructions_list);
-				waiting_instructions_list.removeAll(waiting_instructions_list);
+			if(down_instructions_list.size() > 0){
+				instructions_list = down_instructions_list;
+			}else{
+				if(up_instructions_list.size()>0) {
+					instructions_list = up_instructions_list;
+					direction_reversal();
+				}
 			}
 		}
-		for(int k=0;k<remove_items.size();k++){
-			instructions_list.remove(remove_items.get(k));
-		}
-		remove_items.removeAll(remove_items);
-		if(number_request_for_actual_direction==0&&instructions_list.size()>1){
-			if (actual_direction == Sens.HAUT) {
-				Collections.sort(instructions_list, new CommandCompararatorDown());
-			} else {
+
+
+		if(up_instructions_list.size()>1){
 				Collections.sort(instructions_list, new CommandCompararatorUp());
-			}
 		}else {
-			if (actual_direction == Sens.HAUT) {
-				Collections.sort(instructions_list, new CommandCompararatorUp());
-			} else {
+			if(down_instructions_list.size()>1) {
 				Collections.sort(instructions_list, new CommandCompararatorDown());
 			}
 		}
@@ -195,40 +196,33 @@ public class Instructions {
 	}
 
 	private void displacement_executor(){
-		if(instructions_list.size()>0) {
-			//Si la commande actuelle est différente de la commande qui a été placée comme prioritaire (premières valeurs du tableau)
-			//alors la commande actuelle prend la valeur de la commande prioritaire
+		if(instructions_list!=null&&instructions_list.size()>0) {
 
-			if(!actual_instruction2_executed&&((actual_floor-stop_to_floor==1)||(actual_floor-stop_to_floor==-1))) {
+			if (stop_to_floor != instructions_list.get(0).floor) {
+				actual_instruction_executed=false;
+				actual_instruction2_executed=false;
+				stop_to_floor = instructions_list.get(0).floor;
+				Action.output_text("        [INSTRUCTION] Prochain étage à atteindre : "+stop_to_floor,true);
+
+				if (stop_to_floor > actual_floor) {
+					act.go_upstair();
+				}else {
+					act.go_downstair();
+				}
+			}
+
+			if(!actual_instruction2_executed && ((actual_floor-stop_to_floor==1)||(actual_floor-stop_to_floor==-1))) {
 				Action.output_text("        [INSTRUCTION] Appel à l'arrêt au prochain étage",true);
 				act.next_floor();
 				actual_instruction2_executed = true;
 			}
 
-			if (actual_floor == stop_to_floor && !actual_instruction_executed) {
+			if (!actual_instruction_executed && (actual_floor == stop_to_floor)) {
 				actual_instruction_executed = true;
 				instructions_list.remove(0);
+				AscenseurGUI.externals_buttons[stop_to_floor].setBackground(UIManager.getColor ( "Panel.background" ));
 				Action.output_text("        [INSTRUCTION] Etage atteint, supression de cet étage dans la liste d'attente",true);
-			}
-
-			if (instructions_list.size()>0&&actual_command.floor!=instructions_list.get(0).floor) {
-				actual_command = instructions_list.get(0);
-				actual_instruction_executed=false;
-				actual_instruction2_executed=false;
-				stop_to_floor=actual_command.floor;
-				Action.output_text("        [INSTRUCTION] Prochain étage à atteindre : "+stop_to_floor,true);
-				if(actual_command.sens!=actual_direction) {
-					if (actual_floor < stop_to_floor) {
-						act.go_upstair();
-					} else {
-						act.go_downstair();
-					}
-				}else {
-					if (actual_direction == Sens.HAUT)
-						act.go_upstair();
-					else
-						act.go_downstair();
-				}
+				return;
 			}
 
 		}
@@ -236,9 +230,10 @@ public class Instructions {
 
 	Instructions(){
 		timer = new Timer(100, e -> {
-			if(d_closed)
-				displacement_management();
-			displacement_executor();
+				if(d_closed) {
+					displacement_management();
+					displacement_executor();
+				}
 		});
 		timer.start();
 

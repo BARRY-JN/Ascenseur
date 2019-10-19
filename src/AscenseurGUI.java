@@ -7,6 +7,9 @@ import static javax.swing.JFrame.EXIT_ON_CLOSE;
 
 public class AscenseurGUI {
 
+	static JPanel[] externals_buttons = new JPanel[6];
+	static ArrayList<JButton> ButtonsList = new ArrayList<>();
+
 	//Classe interne utilisée pour dessiner l'assenceur et les étages
 	public static class ElevatorVisualizationPanel extends JPanel {
 		private int y = 250;
@@ -16,6 +19,7 @@ public class AscenseurGUI {
 		private int animation=0;
 		private boolean do_animate=false;
 		private Timer timer;
+		private int previous_floor = 92;
 
 		ElevatorVisualizationPanel(Action action) {
 			this.action=action;
@@ -23,7 +27,10 @@ public class AscenseurGUI {
 				int floor_detected=-1;
 				if(!do_animate) {
 					floor_detected=floor_detected();
-					if (floor_detected!=-1) {
+
+					//L'ascenseur n'envoie qu'un et un seul signal quand ses capteurs franchissent un étage
+					if (floor_detected!=-1&&previous_floor!=floor_detected) {
+						previous_floor=floor_detected;
 						Action.output_text("[ASCENSEUR] Etage détecté", true);
 						action.detected_floor(floor_detected);
 						if(action.can_open_doors()) {
@@ -124,9 +131,7 @@ public class AscenseurGUI {
 
 	}
 
-
 	private ArrayList<JButton> createFloorButtons(Action action){
-		ArrayList<JButton> ButtonsList = new ArrayList<>();
 		JButton Floor_button;
 		Image button_icon;
 
@@ -136,10 +141,10 @@ public class AscenseurGUI {
 			else
 				Floor_button = new JButton("   RDC  ");
 			try {
-				button_icon = ImageIO.read(getClass().getResource("etage"+i+"off.png"));
-				Floor_button.setIcon(new ImageIcon(button_icon));
 				button_icon = ImageIO.read(getClass().getResource("etage"+i+"on.png"));
-				Floor_button.setPressedIcon (new ImageIcon(button_icon));
+				Floor_button.setIcon(new ImageIcon(button_icon));
+				button_icon = ImageIO.read(getClass().getResource("etage"+i+"off.png"));
+				Floor_button.setPressedIcon(new ImageIcon(button_icon));
 				Floor_button.setMaximumSize(new Dimension(194,60));
 				final int finalI = i;
 				Floor_button.addActionListener(e -> {
@@ -219,6 +224,7 @@ public class AscenseurGUI {
 				final int finalI = i;
 				jb.addActionListener(e -> {
 					action.get_Instructions().add_external(finalI, Instructions.Sens.HAUT);
+					externals_buttons[finalI].setBackground(Color.ORANGE);
 					action.print_instructions();
 				});
 				row.add(jb);
@@ -228,10 +234,12 @@ public class AscenseurGUI {
 				final int finalI = i;
 				jb2.addActionListener(e -> {
 					action.get_Instructions().add_external(finalI, Instructions.Sens.BAS);
+					externals_buttons[finalI].setBackground(Color.ORANGE);
 					action.print_instructions();
 				});
 				row.add(jb2);
 			}
+			externals_buttons[i]=row;
 			column.add(row);
 		}
 		f.add(column,gbc);

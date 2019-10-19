@@ -26,7 +26,7 @@ public class Action {
 	void print_instructions(){
 		output_text("        [INSTRUCTION] Séquence d'étage actuelle :\n",true);
 		for(Instructions.Command i:ins.get_instructions()){
-			output_text("( "+ i.floor +" - "+i.sens.toString()+") ",false);
+			output_text("( "+ i.floor +") ",false);
 		}
 		output_text("",true);
 	}
@@ -59,8 +59,7 @@ public class Action {
 	}
 
 	void go_upstair(){
-		if(ins.get_floor()!=5)
-			go_up=true;
+		go_up=true;
 		go_down=false;
 		emergency_stop=false;
 		stop_next_floor=false;
@@ -70,8 +69,7 @@ public class Action {
 
 	void go_downstair(){
 		go_up=false;
-		if(ins.get_floor()!=0)
-			go_down=true;
+		go_down=true;
 		emergency_stop=false;
 		stop_next_floor=false;
 		stopped=false;
@@ -82,14 +80,13 @@ public class Action {
 	void next_floor(){
 		emergency_stop=false;
 		stop_next_floor=true;
-		stopping_floor =-1;
 		output_text("    [MOTEUR] L'ascenseur s'arrétera au prochain étage !",true);
 	}
 	void stop_all(){
 		if(emergency_stop){
 			emergency_stop=false;
 			stopped=false;
-			ins.emergency_end();
+			ins.emergency_start();
 			output_text("    [MOTEUR] Arrêt d'urgence annulé !", true);
 		}else {
 			go_up = false;
@@ -122,7 +119,7 @@ public class Action {
 		if(!stopped) {
 			if (go_up) {
 				//On ne monte plus si on arrive au dernier étage
-				if(y>=0) {
+				if(y>0) {
 					y -= 2;
 					ins.limits_waived();
 				} else {
@@ -148,6 +145,7 @@ public class Action {
 		return new Point(0,y);
 	}
 
+	int tmp=-2;
 
 	void detected_floor(int f) {
 		//si un étage a été détecté, on vérifie qu'il n'y ait pas eu une demande d'arret au prochain étage
@@ -155,13 +153,14 @@ public class Action {
 		ins.update_floor_level(f);
 
 		if(stop_next_floor){
-			if(stopping_floor==-1) {
-				stopping_floor = f;
+			if(tmp==-2) {
+				tmp=0;
 			}
 		}
-		if(f==stopping_floor) {
+
+		if(tmp==0) {
 			stop();
-			stopping_floor = -1;
+			tmp=-2;
 		}
 	}
 
